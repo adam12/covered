@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		
+			<title>Covered</title>
+		
+		<meta charset="UTF-8"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1"/>
+		
+		<link rel="icon" type="image/png" href="_static/icon.png"/>
+		<link rel="stylesheet" href="_static/site.css" type="text/css" media="screen"/>
+		
+		<script src="_components/jquery/jquery.min.js"></script>
+		<script src="_components/jquery-syntax/jquery.syntax.min.js"></script>
+		<script src="_components/mermaid/mermaid.min.js"></script>
+		
+		<script src="_static/links.js"></script>
+		
+		<script type="text/javascript">
+		//<![CDATA[
+			jQuery(function($) {
+				$.syntax();
+			});
+			
+			let isDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches
+			let config = {theme: 'light'};
+			if (isDarkMode) config.theme = 'dark';
+			else config.theme = 'forest';
+			mermaid.initialize(config);
+		//]]>
+		</script>
+	</head>
+
+	<body>
+		<header> › <a class="link" href="index.html">Project</a></header>
+		
+		<main>
+			
+	<h1>Covered</h1><p><a href="https://github.com/ioquatix/covered/actions?workflow=Development"><img src="https://github.com/ioquatix/covered/workflows/Development/badge.svg" alt="Development Status"/></a></p>
+<p>Covered uses modern Ruby features to generate comprehensive coverage, including support for templates which are compiled into Ruby.</p>
+<ul>
+<li>Incremental coverage - if you run your full test suite, and the run a subset, it will still report the correct coverage - so you can incrementally work on improving coverage.</li>
+<li>Integration with RSpec, Minitest, Travis &amp; Coveralls - no need to configure anything - out of the box support for these platforms.</li>
+<li>Supports coverage of views - templates compiled to Ruby code can be tracked for coverage reporting.</li>
+</ul>
+<p><img src="media/example.png" alt="Screenshot"/></p>
+<section id="motivation"><h2>Motivation</h2>
+<p>Existing Ruby coverage tools are unable to handle <code>eval</code>ed code. This is because the <code>coverage</code> module built into Ruby doesn't expose the necessary hooks to capture it. Using the <a href="https://github.com/whitequark/parser">parser</a> gem allows us to do our own source code analysis to compute executable lines, thus making it possible to compute coverage for &quot;templates&quot;.</p>
+<p>It's still tricky to do it correctly, but it is feasible now to compute coverage of web application &quot;views&quot; by using this technique. This gem is an exploration to see what is possible.</p>
+</section><section id="installation"><h2>Installation</h2>
+<p>Add this line to your application's <code>Gemfile</code>:</p>
+<pre><code class="language-ruby">gem 'covered'
+</code></pre>
+</section><section id="rspec-integration"><h3>RSpec Integration</h3>
+<p>In your <code>spec/spec_helper.rb</code> add the following before loading any other code:</p>
+<pre><code class="language-ruby">require 'covered/rspec'
+</code></pre>
+<p>Ensure that you have a <code>.rspec</code> file with <code>--require spec_helper</code>:</p>
+<pre><code>--require spec_helper
+--format documentation
+--warnings
+</code></pre>
+</section><section id="minitest-integration"><h3>Minitest Integration</h3>
+<p>In your <code>test/test_helper.rb</code> add the following before loading any other code:</p>
+<pre><code class="language-ruby">require 'covered/minitest'
+require 'minitest/autorun'
+</code></pre>
+<p>In your test files, e.g. <code>test/dummy_test.rb</code> add the following at the top:</p>
+<pre><code class="language-ruby">require_relative 'test_helper'
+</code></pre>
+</section><section id="usage"><h2>Usage</h2>
+<p>Please browse the <a href="source/index.html">source code index</a> or refer to the guides below.</p>
+
+
+</section><section id="partial-summary"><h3>Partial Summary</h3>
+<pre><code>COVERAGE=PartialSummary rspec
+</code></pre>
+<p>This report only shows snippets of source code with incomplete coverage.</p>
+</section><section id="brief-summary"><h3>Brief Summary</h3>
+<pre><code>COVERAGE=BriefSummary rspec
+</code></pre>
+<p>This report lists several files in order of least coverage.l</p>
+</section><section id="coveralls/travis-integration"><h3>Coveralls/Travis Integration</h3>
+<p>You can send coverage information to <a href="https://coveralls.io">Coveralls</a> by editing your <code>.travis.yml</code> file:</p>
+<pre><code>matrix:
+  include:
+    - rvm: 2.6
+      env: COVERAGE=PartialSummary,Coveralls
+</code></pre>
+<p>This will print out a brief report and then upload the coverage data. This integrates transparently with Travis.</p>
+</section><section id="see-also"><h2>See Also</h2>
+<ul>
+<li><a href="https://github.com/lemurheavy/coveralls-ruby">coveralls-ruby</a> – the official Coveralls implementation for Ruby.</li>
+<li><a href="https://github.com/colszowka/simplecov">simplecov</a> – one of the original coverage implementations for Ruby, uses the built-in <code>coverage</code> library.</li>
+</ul>
+</section><section id="contributing"><h2>Contributing</h2>
+<ol>
+<li>Fork it</li>
+<li>Create your feature branch (<code>git checkout -b my-new-feature</code>)</li>
+<li>Commit your changes (<code>git commit -am 'Add some feature'</code>)</li>
+<li>Push to the branch (<code>git push origin my-new-feature</code>)</li>
+<li>Create new Pull Request</li>
+</ol>
+</section><section id="license"><h2>License</h2>
+<p>Released under the MIT license.</p>
+<p>Copyright, 2018, by <a href="http://www.codeotaku.com/samuel-williams">Samuel G. D. Williams</a>.</p>
+<p>Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the &quot;Software&quot;), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:</p>
+<p>The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.</p>
+<p>THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.</p>
+</section>
+				
+			<footer>Documentation generated by <a href="https://github.com/socketry/utopia-project">Utopia::Project</a>.</footer>
+		</main>
+	</body>
+</html>
